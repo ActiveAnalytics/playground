@@ -94,6 +94,6 @@ require(Rcpp)
 flgString <- '-pthread -lmongoclient -lboost_thread -lboost_system -lboost_regex'
 Sys.setenv("PKG_CXXFLAGS"=flgString)
 Sys.setenv("PKG_LIBS"=flgString)
-sourceCpp("tutorial5_RTypes.cpp")
+sourceCpp("mongo_rcpp_2.cpp")
 testFun(age = c(40, 55, 33), location = c("london", "new york", "paris"))
 */
