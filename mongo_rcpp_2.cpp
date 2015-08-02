@@ -4,6 +4,8 @@
 #ifdef Realloc
 #undef Realloc
 #endif
+// Above answered on stack overflow to avoid Realloc conflicts:
+// http://stackoverflow.com/questions/31766585/rcpp-and-mongodb-c-driver-compilation-error-realloc-conflict
 #include <R.h>
 // [[Rcpp::interfaces(r, cpp)]]
 #include <Rcpp.h>
