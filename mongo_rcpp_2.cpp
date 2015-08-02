@@ -261,6 +261,7 @@ SEXP test(){
 
 /*
 # R code
+# This is currently broken
 require(Rcpp)
 flgString <- '-pthread -lmongoclient -lboost_thread -lboost_system -lboost_regex'
 Sys.setenv("PKG_CXXFLAGS"=flgString)
