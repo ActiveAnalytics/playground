@@ -33,22 +33,7 @@ SEXP check_type(SEXP x){
 	return wrap(0);
 }
 
-
-/* @title Converts sexp vector element to bson element
- * 
- * @description This function accepts two sexp one a field name 
- * and the other the content for the field a single item.
- * A BSONObjBuilder is used to construct a BSONObj containing
- * a single BSONElement. Type checking occurs on the SEXP field 
- * value to create the content of the BSONObj. The BSONObj
- * is then returned.
- * 
- * @param field_name an SEXP character denoting name of the field
- * @param field_value an SEXP item for the field value
- * 
- * @return a BSONObj
- *  
- */
+// Creates BSONObj with single BSONElement and returns it
 BSONObj sexp_to_bson(SEXP field_name, SEXP field_value){
 	const char* _field_name = CHAR(Rf_asChar(field_name));
 	BSONObj _p;
