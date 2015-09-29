@@ -13,30 +13,16 @@ function convert{T <: Nullable, U}(x::Type{U}, y::T)
   convert(U, y.value)
 end
 
-# Promote Nullable, U
-function promote{T <: Nullable, U}(x::T, y::U)
-  X = promote_type(T, U)
-  return (Nullable{X}(x.value), Nullable{X}(y))
-end
-
-# Promote U, Nullable
-function promote{U, T <: Nullable}(x::U, y::T)
-  X = promote_type(U, T)
-  return (Nullable{X}(x), Nullable{X}(y.value))
-end
-
-
-# Import base binary operators
 import Base: +, -, *, /, \, ^, %, &, |, $, >>>, >>, <<, ==, !=, <, <=, >, >=
 
 # Define binary operators
 arith = [:+, :-, :*, :/, :\, :^, :%]
 bit = [:&, :|, :$, :>>>, :>>, :<<]
 update = [:+=, :-=, :/=, :\=, :%=, :^=, :|=, :>>>=, :>>=, :<<=]
-comp = [:(==), :!=, :<, :<=, :>, :>=]
+# comp = [:(==), :!=, :<, :<=, :>, :>=]
 
-# Combine to one vector
-syms = [arith; bit; update; comp]
+# Symbols
+syms = [arith; bit; update]
 
 # Symbol expression union type
 sym_expr = Union{Symbol, Expr}
@@ -59,8 +45,12 @@ end
 function exnu{Q<:Union{Symbol, Expr}}(sym::Q)
   quote
     function $sym{T<:Nullable, U}(x::T, y::U)
-      z = promote(x, y)
-      $sym(z[1], z[2])
+    X = promote_type(eltype(x), typeof(y))
+       try
+          Nullable{X}($sym(x.value, y))
+       catch
+          Nullable{X}()
+       end
     end
   end
 end
@@ -69,8 +59,12 @@ end
 function exun{Q<:Union{Symbol, Expr}}(sym::Q)
   quote
     function $sym{U, T<:Nullable}(x::U, y::T)
-      z = promote(x, y)
-      $sym(z[1], z[2])
+    X = promote_type(typeof(x), eltype(y))
+      try
+        Nullable{X}($sym(x, y.value))
+      catch
+        Nullable{X}()
+      end
     end
   end
 end
