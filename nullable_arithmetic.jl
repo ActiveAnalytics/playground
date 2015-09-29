@@ -3,7 +3,7 @@
 # Convert Nullables
 import Base: convert
 
-# Type specification
+# Conversion
 function convert{T, U}(x::Type{Nullable{T}}, y::U)
   Nullable{T}(convert(T, y))
 end
@@ -36,7 +36,7 @@ syms = [arith; bit; update; comp]
 # Symbol expression union type
 sym_expr = Union{Symbol, Expr}
 
-# Nullable{T} + Nullable{T} family
+# Nullable{T} and Nullable{T} family
 function exnn{Q<:Union{Symbol, Expr}}(sym::Q)
   quote
     function $sym{T<:Nullable, U<:Nullable}(x::T, y::U)
@@ -50,7 +50,7 @@ function exnn{Q<:Union{Symbol, Expr}}(sym::Q)
   end
 end
 
-# For the Nullable{T} + U family
+# For the Nullable{T} and U family
 function exnu{Q<:Union{Symbol, Expr}}(sym::Q)
   quote
     function $sym{T<:Nullable, U}(x::T, y::U)
