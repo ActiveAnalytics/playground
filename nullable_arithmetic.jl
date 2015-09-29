@@ -9,7 +9,7 @@ function convert{T, U}(x::Type{Nullable{T}}, y::U)
 end
 
 # Reverse conversion
-function convert{T, U}(x::Type{U}, y::Nullable{T})
+function convert{T <: Nullable, U}(x::Type{U}, y::T)
   convert(U, y.value)
 end
 
