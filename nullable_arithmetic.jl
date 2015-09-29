@@ -8,6 +8,11 @@ function convert{T, U}(x::Type{Nullable{T}}, y::U)
   Nullable{T}(convert(T, y))
 end
 
+# Reverse conversion
+function convert{T, U}(x::Type{U}, y::Nullable{T})
+  convert(U, y.value)
+end
+
 # Promote Nullable, U
 function promote{T <: Nullable, U}(x::T, y::U)
   X = promote_type(T, U)
@@ -60,7 +65,7 @@ function exnu{Q<:Union{Symbol, Expr}}(sym::Q)
   end
 end
 
-# For the U + Nullable{T} family
+# For the U and Nullable{T} family
 function exun{Q<:Union{Symbol, Expr}}(sym::Q)
   quote
     function $sym{U, T<:Nullable}(x::U, y::T)
